@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Plus, Calendar } from 'lucide-react';
 import api from '../api/axios';
-import { Plus, Calendar, User, CheckCircle2 } from 'lucide-react';
-import dayjs from 'dayjs';
 import Toast from '../components/Toast';
 
 const ExpertAdminPage: React.FC = () => {
