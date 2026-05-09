@@ -2,7 +2,7 @@ import React from 'react';
 
 const SkeletonCard: React.FC = () => {
   return (
-    <div className="bg-[var(--card)] border border-[var(--card-border)] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-blue-900/5 dark:shadow-none p-8">
+    <div className="bg-(--card) border border-(--card-border) rounded-[2.5rem] overflow-hidden shadow-2xl shadow-blue-900/5 dark:shadow-none p-8">
       <div className="flex items-center gap-6 mb-10 animate-pulse">
         <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-3xl" />
         <div className="flex-1 space-y-3">
@@ -21,7 +21,7 @@ const SkeletonCard: React.FC = () => {
         <div className="h-4 bg-slate-50 dark:bg-slate-800/50 rounded-full w-5/6" />
       </div>
       
-      <div className="h-16 bg-slate-100 dark:bg-slate-800 rounded-[1.5rem] w-full animate-pulse" />
+      <div className="h-16 bg-slate-100 dark:bg-slate-800 rounded-3xl w-full animate-pulse" />
     </div>
   );
 };

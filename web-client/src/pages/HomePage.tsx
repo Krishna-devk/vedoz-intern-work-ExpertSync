@@ -71,7 +71,7 @@ const HomePage: React.FC = () => {
         </div>
         
         <h2 className="text-6xl md:text-8xl font-black mb-8 text-slate-900 dark:text-white leading-[1.05] tracking-tight">
-          Book Expert <br /> Sessions in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-500">Real-Time</span>
+          Book Expert <br /> Sessions in <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-500">Real-Time</span>
         </h2>
         
         <p className="text-slate-500 dark:text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
@@ -82,8 +82,8 @@ const HomePage: React.FC = () => {
       {/* Premium Search Bar */}
       <div className="max-w-4xl mx-auto mb-16">
         <div className="relative group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[2.5rem] blur opacity-15 group-focus-within:opacity-30 transition duration-1000"></div>
-          <div className="relative flex items-center bg-[var(--card)] border border-[var(--card-border)] rounded-[2rem] p-2 shadow-2xl shadow-blue-900/5 dark:shadow-none">
+          <div className="absolute -inset-1 bg-linear-to-r from-blue-600 to-indigo-600 rounded-[2.5rem] blur opacity-15 group-focus-within:opacity-30 transition duration-1000"></div>
+          <div className="relative flex items-center bg-(--card) border border-(--card-border) rounded-4xl p-2 shadow-2xl shadow-blue-900/5 dark:shadow-none">
             <div className="flex items-center flex-1 px-4">
               <Search className="text-slate-400 dark:text-slate-500 w-6 h-6" />
               <input 
@@ -111,7 +111,7 @@ const HomePage: React.FC = () => {
               className={`whitespace-nowrap px-8 py-4 rounded-2xl font-bold transition-all border-2 ${
                 category === cat 
                 ? 'bg-blue-600 border-blue-600 text-white shadow-xl shadow-blue-600/25 scale-105' 
-                : 'bg-[var(--card)] border-[var(--card-border)] text-slate-500 hover:border-blue-500/30 hover:text-blue-600 dark:hover:text-blue-400'
+                : 'bg-(--card) border-(--card-border) text-slate-500 hover:border-blue-500/30 hover:text-blue-600 dark:hover:text-blue-400'
               }`}
             >
               {cat}
@@ -153,7 +153,7 @@ const HomePage: React.FC = () => {
             )}
             {!hasMore && allExperts.length > 0 && (
               <div className="w-full flex flex-col items-center gap-6">
-                <div className="h-[1px] w-full bg-slate-100 dark:bg-slate-800"></div>
+                <div className="h-px w-full bg-slate-100 dark:bg-slate-800"></div>
                 <div className="bg-slate-50 dark:bg-slate-900 px-6 py-2 rounded-full border border-slate-100 dark:border-slate-800">
                   <p className="text-slate-400 dark:text-slate-500 text-xs font-black uppercase tracking-widest">
                     You've reached the end of the directory
@@ -164,8 +164,8 @@ const HomePage: React.FC = () => {
           </div>
         </>
       ) : (
-        <div className="text-center py-32 bg-[var(--card)] rounded-[4rem] border-2 border-dashed border-slate-100 dark:border-slate-800 animate-fade-in shadow-sm">
-          <div className="w-24 h-24 bg-slate-50 dark:bg-slate-800 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-inner">
+        <div className="text-center py-32 bg-(--card) rounded-4xl border-2 border-dashed border-slate-100 dark:border-slate-800 animate-fade-in shadow-sm">
+          <div className="w-24 h-24 bg-slate-50 dark:bg-slate-800 rounded-4xl flex items-center justify-center mx-auto mb-8 shadow-inner">
             <Search className="w-12 h-12 text-slate-200 dark:text-slate-700" />
           </div>
           <h4 className="text-2xl font-black text-slate-900 dark:text-white mb-2">No mentors found</h4>

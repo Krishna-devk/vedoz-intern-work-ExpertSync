@@ -140,7 +140,7 @@ const ExpertDetailPage: React.FC = () => {
               <img 
                 src={expert.avatar} 
                 alt={expert.name} 
-                className="w-32 h-32 rounded-[2rem] object-cover border-4 border-slate-50 dark:border-slate-800 shadow-lg"
+                className="w-32 h-32 rounded-4xl object-cover border-4 border-slate-50 dark:border-slate-800 shadow-lg"
               />
               <div className="absolute -bottom-2 -right-2 bg-blue-600 p-2 rounded-xl shadow-lg border-4 border-white dark:border-slate-900">
                 <ShieldCheck className="w-5 h-5 text-white" />
@@ -199,7 +199,7 @@ const ExpertDetailPage: React.FC = () => {
                   <div key={date}>
                     <h3 className="text-slate-400 dark:text-slate-500 font-black uppercase text-[10px] tracking-[0.2em] mb-6 flex items-center gap-4">
                       {dayjs(date).format('dddd, MMMM D')}
-                      <div className="h-[1px] flex-1 bg-slate-100 dark:bg-slate-800"></div>
+                      <div className="h-px flex-1 bg-slate-100 dark:bg-slate-800"></div>
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       {groupedSlots[date].map((slot, index) => {
@@ -214,7 +214,7 @@ const ExpertDetailPage: React.FC = () => {
                             disabled={isBooked || isPast}
                             onClick={() => setSelectedSlot(slot.startTime)}
                             className={`
-                              p-5 rounded-[1.5rem] border-2 text-sm font-black transition-all
+                              p-5 rounded-3xl border-2 text-sm font-black transition-all
                               ${(isBooked || isPast)
                                 ? 'bg-slate-50 dark:bg-slate-950 border-slate-50 dark:border-slate-900 text-slate-300 dark:text-slate-700 cursor-not-allowed line-through opacity-50' 
                                 : isSelected
@@ -279,7 +279,7 @@ const ExpertDetailPage: React.FC = () => {
                 <button 
                   type="submit"
                   disabled={bookingMutation.isPending}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-5 rounded-[1.5rem] transition-all shadow-xl shadow-blue-600/20 disabled:opacity-50 text-lg tracking-tight"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-5 rounded-3xl transition-all shadow-xl shadow-blue-600/20 disabled:opacity-50 text-lg tracking-tight"
                 >
                   {bookingMutation.isPending ? 'Processing Booking...' : 'Confirm Session Booking'}
                 </button>

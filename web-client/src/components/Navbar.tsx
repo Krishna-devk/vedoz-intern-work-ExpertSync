@@ -7,7 +7,7 @@ const Navbar: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[var(--background)]/90 backdrop-blur-xl border-b border-[var(--card-border)] transition-all duration-300 shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-(--background)/90 backdrop-blur-xl border-b border-(--card-border) transition-all duration-300 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           <div className="flex items-center">
@@ -22,10 +22,10 @@ const Navbar: React.FC = () => {
             <Link to="/my-bookings" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-white transition-colors font-bold text-sm tracking-tight">
               My Bookings
             </Link>
-            <div className="h-6 w-[1px] bg-[var(--card-border)]"></div>
+            <div className="h-6 w-px bg-(--card-border)"></div>
             <button 
               onClick={toggleTheme}
-              className="p-3 rounded-2xl bg-[var(--card)] hover:bg-[var(--card-border)] transition-all border border-[var(--card-border)] shadow-sm group"
+              className="p-3 rounded-2xl bg-(--card) hover:bg-(--card-border) transition-all border border-(--card-border) shadow-sm group"
             >
               {theme === 'dark' ? (
                 <Sun className="w-5 h-5 text-yellow-500 group-hover:rotate-45 transition-transform" />

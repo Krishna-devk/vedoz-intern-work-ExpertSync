@@ -9,11 +9,11 @@ interface ExpertCardProps {
 
 const ExpertCard: React.FC<ExpertCardProps> = ({ expert }) => {
   return (
-    <div className="bg-[var(--card)] border border-[var(--card-border)] rounded-[2.5rem] overflow-hidden hover:border-blue-500/50 transition-all duration-500 group hover:-translate-y-3 shadow-2xl shadow-blue-900/5 dark:shadow-none hover:shadow-blue-500/10">
+    <div className="bg-(--card) border border-(--card-border) rounded-[2.5rem] overflow-hidden hover:border-blue-500/50 transition-all duration-500 group hover:-translate-y-3 shadow-2xl shadow-blue-900/5 dark:shadow-none hover:shadow-blue-500/10">
       <div className="p-8">
         <div className="flex items-center gap-6 mb-10">
           <div className="relative">
-            <div className="absolute -inset-1 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-3xl blur opacity-0 group-hover:opacity-20 transition-opacity"></div>
+            <div className="absolute -inset-1 bg-linear-to-tr from-blue-600 to-indigo-600 rounded-3xl blur opacity-0 group-hover:opacity-20 transition-opacity"></div>
             <img 
               src={expert.avatar} 
               alt={expert.name} 
@@ -49,7 +49,7 @@ const ExpertCard: React.FC<ExpertCardProps> = ({ expert }) => {
         
         <Link 
           to={`/expert/${expert._id}`} 
-          className="w-full flex items-center justify-center gap-3 bg-slate-900 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-500 text-white font-black py-5 rounded-[1.5rem] transition-all shadow-xl shadow-slate-900/10 dark:shadow-blue-500/20 active:scale-[0.98] group/btn"
+          className="w-full flex items-center justify-center gap-3 bg-slate-900 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-500 text-white font-black py-5 rounded-3xl transition-all shadow-xl shadow-slate-900/10 dark:shadow-blue-500/20 active:scale-[0.98] group/btn"
         >
           <span>Reserve Session</span>
           <ArrowRight className="w-5 h-5 transition-transform group-hover/btn:translate-x-1.5" />
