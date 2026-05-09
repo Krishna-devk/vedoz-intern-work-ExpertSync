@@ -10,6 +10,12 @@ import ExpertAdminPage from './pages/ExpertAdminPage';
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
+  React.useEffect(() => {
+    // Wake up the Render backend
+    fetch(`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/health`)
+      .catch(() => {/* Ignore errors, just want to trigger the wake-up */});
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
