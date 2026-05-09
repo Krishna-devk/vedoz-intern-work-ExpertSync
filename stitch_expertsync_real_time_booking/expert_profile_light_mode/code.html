@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ExpertSync - Expert Detail Page</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-surface": "#191b23",
+                "surface-variant": "#e1e2ec",
+                "tertiary": "#924700",
+                "on-tertiary-container": "#fffbff",
+                "secondary-container": "#d0e1fb",
+                "on-tertiary": "#ffffff",
+                "primary-fixed-dim": "#adc6ff",
+                "on-primary": "#ffffff",
+                "error-container": "#ffdad6",
+                "outline-variant": "#c2c6d6",
+                "surface-container-high": "#e6e7f2",
+                "tertiary-fixed": "#ffdcc6",
+                "primary-container": "#2170e4",
+                "primary-fixed": "#d8e2ff",
+                "inverse-on-surface": "#eff0fa",
+                "on-error": "#ffffff",
+                "on-primary-fixed": "#001a42",
+                "on-background": "#191b23",
+                "surface-container": "#ecedf7",
+                "secondary-fixed": "#d3e4fe",
+                "on-tertiary-fixed": "#311400",
+                "background": "#f9f9ff",
+                "tertiary-fixed-dim": "#ffb786",
+                "surface-container-lowest": "#ffffff",
+                "secondary": "#505f76",
+                "inverse-primary": "#adc6ff",
+                "error": "#ba1a1a",
+                "surface-container-highest": "#e1e2ec",
+                "surface-tint": "#005ac2",
+                "on-surface-variant": "#424754",
+                "on-tertiary-fixed-variant": "#723600",
+                "surface-bright": "#f9f9ff",
+                "surface": "#f9f9ff",
+                "outline": "#727785",
+                "primary": "#0058be",
+                "on-error-container": "#93000a",
+                "surface-dim": "#d8d9e3",
+                "on-secondary-fixed-variant": "#38485d",
+                "surface-container-low": "#f2f3fd",
+                "on-primary-fixed-variant": "#004395",
+                "tertiary-container": "#b75b00",
+                "secondary-fixed-dim": "#b7c8e1",
+                "on-secondary-fixed": "#0b1c30",
+                "on-primary-container": "#fefcff",
+                "inverse-surface": "#2e3038",
+                "on-secondary-container": "#54647a",
+                "on-secondary": "#ffffff"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "md": "16px",
+                "sm": "8px",
+                "lg": "24px",
+                "base": "8px",
+                "gutter": "24px",
+                "xl": "32px",
+                "margin": "32px",
+                "container-max": "1280px",
+                "xs": "4px"
+        },
+        "fontFamily": {
+                "body-lg": [
+                        "Inter"
+                ],
+                "body-sm": [
+                        "Inter"
+                ],
+                "label-sm": [
+                        "Inter"
+                ],
+                "display-lg": [
+                        "Inter"
+                ],
+                "headline-md": [
+                        "Inter"
+                ],
+                "headline-sm": [
+                        "Inter"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "label-md": [
+                        "Inter"
+                ],
+                "headline-lg": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-sm": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-sm": [
+                        "11px",
+                        {
+                                "lineHeight": "14px",
+                                "fontWeight": "500"
+                        }
+                ],
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "56px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-sm": [
+                        "20px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-md": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md">
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin h-16 bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">ExpertSync</span>
+</div>
+<nav class="hidden md:flex gap-lg items-center">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md hover:text-primary transition-colors duration-200 opacity-80 scale-95 transition-all" href="#">Explore</a>
+<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors duration-200" href="#">My Bookings</a>
+<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors duration-200" href="#">Resources</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors text-primary">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors text-primary">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A small, circular avatar portrait of a modern professional against a neutral dark background. The lighting is studio quality, emphasizing crisp details. The overall mood is confident and minimalist, fitting a dark-mode technical dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbi-2mqEe8skN7mKIyn7-wrIT0fmqt8nqGZDj7Jbt_IMI92A6AThZwoSLS0ckhWe7Xmh1MLtCRyHRNYnpHXISDhWWM4I5J4ROs6HnUx-zdG6MB3AHgbxy5_lyVOMa-2uk7Iqmsa0YLyzpw4vCeXIl68_qGwUgb-k8Qzcl_Yn1y90z0wBEuHN65UDRPZEU4Y6wzSJBXfxX0a5-eeYcvt9zrroLgluoQvFo1N0HGV2J1R4GQM_1FH8MM-sUegLGJhGU98XWNrVB0zAD_"/>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow pt-24 pb-xl px-margin md:px-margin max-w-container-max mx-auto w-full">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Profile Section (Bento Grid Style) -->
+<div class="lg:col-span-5 flex flex-col gap-md">
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg relative overflow-hidden flex flex-col items-center text-center">
+<div class="absolute top-4 right-4 flex items-center gap-2 bg-surface-variant px-3 py-1 rounded-full border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_8px_#10B981]"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Live Now</span>
+</div>
+<img alt="Expert Avatar" class="w-32 h-32 rounded-full border-4 border-surface-variant mb-md shadow-[0_0_20px_rgba(59,130,246,0.15)] object-cover" data-alt="A highly professional portrait of a male executive in his late 30s, wearing a tailored dark suit. He is set against a dark, minimalist architectural background. The lighting is dramatic yet professional, with soft shadows enhancing his sharp features. The mood is authoritative and exclusive, perfectly suited for a high-end scheduling platform in dark mode." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfKQeEXbA0FOEL3gt3NDD-2cMdGXeC4aoiMaoSl9c-7nDa6jRQpvBK6eRyI077HZeJ21azGZ9UKrfukHGTPKwrI-Oo7bvsu8r_EzKK-E1kmiPLYQbkq9nFVANG_xm644hIWwXyRwE9ma-P0tcvh7JNfYpwdU6Aov-xcui4mS4JxUggoGCJjMWXFSHrIzRu4EEXQ4wp9FPn14C2GzwKy0e5ejR54MTRZw-gvgORMfKRTy4EEJt6a9ci-3McVzhUfIxqF50HKMp6mBI3"/>
+<h1 class="font-headline-md text-headline-md text-on-surface mb-1">Dr. Alexander Vance</h1>
+<p class="font-headline-sm text-headline-sm text-primary mb-3">Senior Systems Architect</p>
+<div class="flex items-center gap-1 mb-md">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="star_half" style="font-variation-settings: 'FILL' 1;">star_half</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant ml-2">4.9 (128 Reviews)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-sm">Specializing in scalable cloud infrastructure and high-performance backend architecture. Over 15 years of experience optimizing complex enterprise systems for minimal latency and maximum throughput.</p>
+</div>
+<!-- Quick Stats -->
+<div class="grid grid-cols-2 gap-md">
+<div class="bg-surface-container border border-outline-variant rounded-xl p-md flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase">Response Time</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">&lt; 15 mins</span>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-md flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase">Session Rate</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">$250 / hr</span>
+</div>
+</div>
+</div>
+<!-- Booking Section -->
+<div class="lg:col-span-7 flex flex-col gap-md">
+<!-- Calendar Card -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg flex flex-col">
+<div class="flex justify-between items-center border-b border-outline-variant pb-md mb-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Select a Time</h2>
+<div class="flex items-center gap-2">
+<button class="p-1 hover:bg-surface-variant rounded border border-outline-variant transition-colors"><span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span></button>
+<span class="font-body-sm text-body-sm text-primary font-bold">Monday, May 10</span>
+<button class="p-1 hover:bg-surface-variant rounded border border-outline-variant transition-colors"><span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span></button>
+</div>
+</div>
+<div class="grid grid-cols-3 sm:grid-cols-4 gap-sm">
+<!-- Booked/Disabled -->
+<div class="bg-surface-variant/50 border border-outline-variant/50 rounded-lg p-3 text-center cursor-not-allowed opacity-50 relative overflow-hidden group">
+<span class="font-body-sm text-body-sm text-on-surface-variant line-through relative z-10">09:00 AM</span>
+</div>
+<div class="bg-surface-variant/50 border border-outline-variant/50 rounded-lg p-3 text-center cursor-not-allowed opacity-50 relative overflow-hidden group">
+<span class="font-body-sm text-body-sm text-on-surface-variant line-through relative z-10">09:30 AM</span>
+</div>
+<!-- Available -->
+<div class="bg-surface border border-outline-variant rounded-lg p-3 text-center cursor-pointer hover:border-primary hover:bg-primary/5 hover:shadow-[0_0_15px_rgba(33,112,228,0.15)] transition-all">
+<span class="font-body-sm text-body-sm text-on-surface">10:00 AM</span>
+</div>
+<div class="bg-surface border border-outline-variant rounded-lg p-3 text-center cursor-pointer hover:border-primary hover:bg-primary/5 hover:shadow-[0_0_15px_rgba(33,112,228,0.15)] transition-all">
+<span class="font-body-sm text-body-sm text-on-surface">10:30 AM</span>
+</div>
+<div class="bg-surface border border-outline-variant rounded-lg p-3 text-center cursor-pointer hover:border-primary hover:bg-primary/5 hover:shadow-[0_0_15px_rgba(33,112,228,0.15)] transition-all">
+<span class="font-body-sm text-body-sm text-on-surface">11:00 AM</span>
+</div>
+<!-- Selected -->
+<div class="bg-surface border-2 border-[#10B981] rounded-lg p-3 text-center cursor-pointer shadow-[0_0_15px_rgba(16,185,129,0.2)] relative">
+<div class="absolute -top-2 -right-2 bg-[#10B981] rounded-full p-0.5">
+<span class="material-symbols-outlined text-[10px] text-[#ffffff]" data-icon="check" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface font-bold">11:30 AM</span>
+</div>
+<!-- Booked -->
+<div class="bg-surface-variant/50 border border-outline-variant/50 rounded-lg p-3 text-center cursor-not-allowed opacity-50 relative overflow-hidden group">
+<span class="font-body-sm text-body-sm text-on-surface-variant line-through relative z-10">01:00 PM</span>
+</div>
+<!-- Available -->
+<div class="bg-surface border border-outline-variant rounded-lg p-3 text-center cursor-pointer hover:border-primary hover:bg-primary/5 hover:shadow-[0_0_15px_rgba(33,112,228,0.15)] transition-all">
+<span class="font-body-sm text-body-sm text-on-surface">01:30 PM</span>
+</div>
+<div class="bg-surface border border-outline-variant rounded-lg p-3 text-center cursor-pointer hover:border-primary hover:bg-primary/5 hover:shadow-[0_0_15px_rgba(33,112,228,0.15)] transition-all">
+<span class="font-body-sm text-body-sm text-on-surface">02:00 PM</span>
+</div>
+<div class="bg-surface border border-outline-variant rounded-lg p-3 text-center cursor-pointer hover:border-primary hover:bg-primary/5 hover:shadow-[0_0_15px_rgba(33,112,228,0.15)] transition-all">
+<span class="font-body-sm text-body-sm text-on-surface">02:30 PM</span>
+</div>
+<div class="bg-surface border border-outline-variant rounded-lg p-3 text-center cursor-pointer hover:border-primary hover:bg-primary/5 hover:shadow-[0_0_15px_rgba(33,112,228,0.15)] transition-all">
+<span class="font-body-sm text-body-sm text-on-surface">03:00 PM</span>
+</div>
+<div class="bg-surface border border-outline-variant rounded-lg p-3 text-center cursor-pointer hover:border-primary hover:bg-primary/5 hover:shadow-[0_0_15px_rgba(33,112,228,0.15)] transition-all">
+<span class="font-body-sm text-body-sm text-on-surface">03:30 PM</span>
+</div>
+</div>
+</div>
+<!-- Booking Form Card -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg flex flex-col">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-md border-b border-outline-variant pb-2">Client Details</h3>
+<form class="flex flex-col gap-md">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase" for="name">Full Name</label>
+<input class="bg-surface border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all shadow-sm" id="name" placeholder="Enter your name" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase" for="email">Email Address</label>
+<input class="bg-surface border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all shadow-sm" id="email" placeholder="Enter your email" type="email"/>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase" for="phone">Phone Number</label>
+<input class="bg-surface border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all shadow-sm" id="phone" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase" for="notes">Session Notes</label>
+<textarea class="bg-surface border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all shadow-sm resize-none" id="notes" placeholder="Briefly describe what you'd like to discuss..." rows="3"></textarea>
+</div>
+<div class="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-outline-variant pt-md">
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Total Due:</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">$125.00 <span class="font-body-sm text-body-sm font-normal text-on-surface-variant">(30 min)</span></span>
+</div>
+<button class="w-full sm:w-auto bg-primary hover:bg-primary-container text-on-primary font-body-md text-body-md font-bold py-3 px-6 rounded-lg transition-colors shadow-[0_0_15px_rgba(33,112,228,0.2)]" type="button">
+                                Confirm Booking
+                            </button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full py-xl px-margin flex flex-col md:flex-row justify-between items-center gap-md bg-surface-container-lowest border-t border-outline-variant">
+<div class="flex flex-col items-center md:items-start">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">ExpertSync</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1">© 2024 ExpertSync. High-performance scheduling for professionals.</span>
+</div>
+<nav class="flex gap-md items-center font-body-sm text-body-sm">
+<a class="text-on-surface-variant hover:text-on-surface underline transition-all" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-on-surface underline transition-all" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-on-surface underline transition-all" href="#">Support</a>
+<a class="text-on-surface-variant hover:text-on-surface underline transition-all" href="#">API Docs</a>
+</nav>
+</footer>
+<!-- Subtle Toast Notification (Real-time feedback) -->
+<div class="fixed bottom-lg right-lg bg-surface-container-high border border-outline-variant rounded-lg p-3 shadow-[0_8px_30px_rgba(0,0,0,0.1)] flex items-center gap-3 z-50 animate-pulse">
+<span class="material-symbols-outlined text-tertiary" data-icon="info">info</span>
+<span class="font-body-sm text-body-sm text-on-surface">Slot just booked by another user</span>
+<button class="ml-2 text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="close">close</span>
+</button>
+</div>
+</body></html>

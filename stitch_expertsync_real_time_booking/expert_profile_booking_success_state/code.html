@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Booking Confirmed - ExpertSync</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#32353c",
+                    "outline-variant": "#424754",
+                    "surface-container-lowest": "#0b0e15",
+                    "primary": "#adc6ff",
+                    "on-background": "#e1e2ec",
+                    "on-secondary-fixed": "#141b2b",
+                    "on-primary-fixed-variant": "#004395",
+                    "tertiary-fixed": "#ffdcc6",
+                    "surface-bright": "#363941",
+                    "primary-container": "#4d8eff",
+                    "error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#723600",
+                    "on-tertiary": "#502400",
+                    "error": "#ffb4ab",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-container-low": "#191b23",
+                    "on-error-container": "#ffdad6",
+                    "inverse-on-surface": "#2e3038",
+                    "surface-container-high": "#272a31",
+                    "secondary-fixed-dim": "#c0c6db",
+                    "secondary-fixed": "#dce2f7",
+                    "secondary-container": "#404758",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-secondary-fixed-variant": "#404758",
+                    "on-tertiary-container": "#461f00",
+                    "background": "#10131a",
+                    "on-surface-variant": "#c2c6d6",
+                    "surface-dim": "#10131a",
+                    "secondary": "#c0c6db",
+                    "on-primary-container": "#00285d",
+                    "on-error": "#690005",
+                    "on-primary": "#002e6a",
+                    "tertiary-container": "#df7412",
+                    "outline": "#8c909f",
+                    "on-primary-fixed": "#001a42",
+                    "inverse-primary": "#005ac2",
+                    "surface-container-highest": "#32353c",
+                    "surface-container": "#1d2027",
+                    "on-surface": "#e1e2ec",
+                    "on-secondary": "#293040",
+                    "tertiary-fixed-dim": "#ffb786",
+                    "surface": "#10131a",
+                    "surface-tint": "#adc6ff",
+                    "inverse-surface": "#e1e2ec",
+                    "on-secondary-container": "#aeb5c9",
+                    "tertiary": "#ffb786",
+                    "on-tertiary-fixed": "#311400"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit-lg": "1.5rem",
+                    "gutter": "1.5rem",
+                    "unit-xl": "2.5rem",
+                    "unit-md": "1rem",
+                    "unit-xs": "0.25rem",
+                    "margin-desktop": "2rem",
+                    "unit-sm": "0.5rem",
+                    "container-max": "1440px",
+                    "margin-mobile": "1rem"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "label-xs": ["Inter"],
+                    "subheading-sm": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "label-xs": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                    "subheading-sm": ["18px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                    "display-lg-mobile": ["36px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                    "headline-md": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                    "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-surface-container-lowest text-on-background min-h-screen flex items-center justify-center p-margin-mobile md:p-margin-desktop antialiased">
+<!-- Ambient background glow for emphasis on the success state -->
+<div class="fixed inset-0 pointer-events-none flex items-center justify-center z-0">
+<div class="w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px]"></div>
+</div>
+<!-- Main Success Container (Level 2 Elevation equivalent via borders and tonal fill) -->
+<main class="relative z-10 w-full max-w-2xl bg-surface-container border border-outline-variant rounded-xl p-8 md:p-12 flex flex-col items-center">
+<!-- Header Section -->
+<div class="flex flex-col items-center text-center mb-10">
+<div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6 ring-1 ring-primary/30 shadow-[0_0_30px_rgba(173,198,255,0.15)]">
+<span class="material-symbols-outlined text-[40px] text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface mb-3">
+                Booking Confirmed!
+            </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+                Your session has been successfully locked in. A calendar invitation has been sent to your email.
+            </p>
+</div>
+<!-- Session Details (Bento-style structured card) -->
+<div class="w-full bg-surface-variant/50 border border-outline-variant rounded-lg p-6 mb-10">
+<h2 class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-widest mb-6">Session Overview</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Expert Info -->
+<div class="flex items-center gap-4 col-span-1 md:col-span-2 border-b border-outline-variant/50 pb-6">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-bright border border-outline-variant shrink-0">
+<img alt="Profile photo of the Expert" class="w-full h-full object-cover" data-alt="A professional headshot of a confident female executive in a modern, dark-themed corporate office. The lighting is cinematic and dramatic, emphasizing a high-performance, expert persona. The color palette features deep blues, stark blacks, and crisp whites, aligning with a premium B2B software aesthetic. The mood is serious, capable, and highly exclusive." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqFDpg3TYk591o8ObdpMhzubzdiKaD8du0IyXJJvXayO6Rw7Jii_cANlSvMtG_60fmFeyWc_rMupCSapza7iEMSlbkjX6Bb-jXm35WuW3jzqV25nnQh5o7aVB_UERKJ8ki6sZ0f0a-idV-6Q_SfUCsEyClgcbILn7pBiMCdE_DDCGDNkMd2-ayiShYn5hubxd_BZHa_RCs_u4l--OeAOzUFTvJ6pj3WTFjQP2s5S56JHzj1-1bTw-YrE-Jc5vapYaGVum2hmlFRmui"/>
+</div>
+<div>
+<div class="font-label-xs text-label-xs text-on-surface-variant mb-1">EXPERT</div>
+<div class="font-subheading-sm text-subheading-sm text-on-surface">Dr. Sarah Jenkins</div>
+<div class="font-body-sm text-body-sm text-primary">Principal Cloud Architect</div>
+</div>
+</div>
+<!-- Date & Time -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span class="font-label-xs text-label-xs uppercase">Date &amp; Time</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface">
+                        Thursday, Oct 24<br/>
+                        10:00 AM - 11:00 AM PST
+                    </div>
+</div>
+<!-- Location/Medium -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">videocam</span>
+<span class="font-label-xs text-label-xs uppercase">Meeting Link</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface flex items-center gap-2">
+<span class="px-2 py-1 bg-surface-container-high rounded border border-outline-variant text-sm">Google Meet</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Call to Actions -->
+<div class="w-full flex flex-col sm:flex-row gap-4">
+<!-- Secondary Action -->
+<button class="flex-1 px-6 py-3 rounded bg-transparent border border-outline-variant text-on-surface hover:bg-surface-bright hover:border-outline font-label-xs text-label-xs tracking-wider transition-all duration-200 text-center">
+                Return to Explore
+            </button>
+<!-- Primary Action -->
+<button class="flex-1 px-6 py-3 rounded bg-primary text-on-primary hover:bg-primary-container font-label-xs text-label-xs tracking-wider transition-all duration-200 text-center shadow-[0_0_15px_rgba(173,198,255,0.1)]">
+                View My Bookings
+            </button>
+</div>
+</main>
+</body></html>

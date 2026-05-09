@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ExpertSync - Loading Bookings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary": "#002e6a",
+                      "secondary-fixed": "#dce2f7",
+                      "inverse-surface": "#e1e2ec",
+                      "on-tertiary": "#502400",
+                      "on-primary-container": "#00285d",
+                      "inverse-primary": "#005ac2",
+                      "primary-fixed-dim": "#adc6ff",
+                      "on-secondary": "#293040",
+                      "on-error": "#690005",
+                      "surface-bright": "#363941",
+                      "on-secondary-fixed-variant": "#404758",
+                      "secondary-container": "#404758",
+                      "surface-container": "#1d2027",
+                      "on-surface-variant": "#c2c6d6",
+                      "surface-dim": "#10131a",
+                      "tertiary": "#ffb786",
+                      "primary": "#adc6ff",
+                      "background": "#10131a",
+                      "outline": "#8c909f",
+                      "tertiary-fixed": "#ffdcc6",
+                      "error": "#ffb4ab",
+                      "tertiary-container": "#df7412",
+                      "surface-container-high": "#272a31",
+                      "surface-container-lowest": "#0b0e15",
+                      "secondary": "#c0c6db",
+                      "secondary-fixed-dim": "#c0c6db",
+                      "on-surface": "#e1e2ec",
+                      "on-secondary-fixed": "#141b2b",
+                      "primary-fixed": "#d8e2ff",
+                      "on-secondary-container": "#aeb5c9",
+                      "inverse-on-surface": "#2e3038",
+                      "on-background": "#e1e2ec",
+                      "primary-container": "#4d8eff",
+                      "on-tertiary-fixed-variant": "#723600",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-low": "#191b23",
+                      "on-primary-fixed": "#001a42",
+                      "outline-variant": "#424754",
+                      "on-tertiary-fixed": "#311400",
+                      "on-primary-fixed-variant": "#004395",
+                      "on-tertiary-container": "#461f00",
+                      "surface-tint": "#adc6ff",
+                      "surface": "#10131a",
+                      "error-container": "#93000a",
+                      "tertiary-fixed-dim": "#ffb786",
+                      "surface-container-highest": "#32353c",
+                      "surface-variant": "#32353c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-mobile": "1rem",
+                      "unit-sm": "0.5rem",
+                      "unit-xl": "2.5rem",
+                      "margin-desktop": "2rem",
+                      "unit-lg": "1.5rem",
+                      "unit-md": "1rem",
+                      "unit-xs": "0.25rem",
+                      "container-max": "1440px",
+                      "gutter": "1.5rem"
+              },
+              "fontFamily": {
+                      "subheading-sm": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-xs": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "display-lg-mobile": [
+                              "Inter"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "subheading-sm": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-xs": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+        .animate-shimmer {
+            animation: shimmer 2s infinite linear;
+            background: linear-gradient(to right, #1d2027 4%, #272a31 25%, #1d2027 36%);
+            background-size: 1000px 100%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased pt-16 flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<nav class="bg-surface-container-low dark:bg-surface-container-low fixed top-0 w-full z-50 flex justify-between items-center px-margin-desktop h-16 bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant dark:border-outline-variant">
+<div class="flex items-center gap-unit-xl">
+<a class="font-display-lg-mobile text-display-lg-mobile font-bold text-on-surface dark:text-on-surface tracking-tight" href="#">ExpertSync</a>
+<div class="hidden md:flex items-center gap-unit-lg">
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium hover:text-primary dark:hover:text-primary transition-colors duration-200" href="#">Explore</a>
+<a class="text-primary dark:text-primary font-bold border-b-2 border-primary pb-1 hover:text-primary dark:hover:text-primary transition-colors duration-200" href="#">My Bookings</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium hover:text-primary dark:hover:text-primary transition-colors duration-200" href="#">Resources</a>
+</div>
+</div>
+<div class="flex items-center gap-unit-md">
+<button class="p-unit-sm rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant hover:text-primary dark:hover:text-primary duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button class="p-unit-sm rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant hover:text-primary dark:hover:text-primary duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest ml-unit-sm overflow-hidden border border-outline-variant">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A close up portrait of a professional man in a dark modern setting. He is wearing a dark suit and looking confidently at the camera. The lighting is dramatic and low-key, fitting a dark mode aesthetic. The mood is serious and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8FyEM_K5p8yMTMmyjhDwV45GNWew3ZoRBx0oSXdg6gjo2bfQP2s-HYz6mY17WYGdy6gwvVTdh2eqgAMkiGR37Ep6RXzZnHgvnTBwOno770wmfr142gX9hWv8FFnc1vZ7_vQEwfPEuCzg2CUeYMqr8G1ki641Q_on4qnT709hhL5BdAxE86hgkAnP0oApFdQn6HZkh1D_lrapvyDLJ8gE2biEKN2Q6Sp92peLdcfc_QVtIATjktudfjoHIuUc36Cu2S6FFQ9UFBaPY"/>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-unit-xl">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-unit-xl gap-unit-md">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-unit-xs">My Bookings</h1>
+<p class="text-on-surface-variant">Loading your schedule...</p>
+</div>
+<!-- Skeleton Filter/Fetch Bar -->
+<div class="w-full md:w-auto flex gap-unit-sm">
+<div class="h-10 w-32 rounded-DEFAULT bg-surface-container animate-shimmer"></div>
+<div class="h-10 w-32 rounded-DEFAULT bg-surface-container animate-shimmer"></div>
+<div class="h-10 w-10 rounded-DEFAULT bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+<!-- Skeleton Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-unit-lg">
+<!-- Skeleton Card 1 -->
+<div class="bg-surface-container-high border border-outline-variant rounded-lg p-unit-lg flex flex-col gap-unit-md">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-unit-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container animate-shimmer"></div>
+<div class="flex flex-col gap-unit-xs">
+<div class="h-5 w-24 rounded bg-surface-container animate-shimmer"></div>
+<div class="h-4 w-16 rounded bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+<div class="h-6 w-20 rounded-full bg-surface-container animate-shimmer"></div>
+</div>
+<div class="flex flex-col gap-unit-sm mt-unit-sm">
+<div class="h-6 w-3/4 rounded bg-surface-container animate-shimmer"></div>
+<div class="flex items-center gap-unit-sm">
+<div class="h-4 w-4 rounded-full bg-surface-container animate-shimmer"></div>
+<div class="h-4 w-1/2 rounded bg-surface-container animate-shimmer"></div>
+</div>
+<div class="flex items-center gap-unit-sm">
+<div class="h-4 w-4 rounded-full bg-surface-container animate-shimmer"></div>
+<div class="h-4 w-1/3 rounded bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+<div class="mt-auto pt-unit-md border-t border-outline-variant flex justify-end gap-unit-sm">
+<div class="h-9 w-24 rounded bg-surface-container animate-shimmer"></div>
+<div class="h-9 w-24 rounded bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+<!-- Skeleton Card 2 -->
+<div class="bg-surface-container-high border border-outline-variant rounded-lg p-unit-lg flex flex-col gap-unit-md">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-unit-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container animate-shimmer"></div>
+<div class="flex flex-col gap-unit-xs">
+<div class="h-5 w-28 rounded bg-surface-container animate-shimmer"></div>
+<div class="h-4 w-20 rounded bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+<div class="h-6 w-20 rounded-full bg-surface-container animate-shimmer"></div>
+</div>
+<div class="flex flex-col gap-unit-sm mt-unit-sm">
+<div class="h-6 w-4/5 rounded bg-surface-container animate-shimmer"></div>
+<div class="flex items-center gap-unit-sm">
+<div class="h-4 w-4 rounded-full bg-surface-container animate-shimmer"></div>
+<div class="h-4 w-2/3 rounded bg-surface-container animate-shimmer"></div>
+</div>
+<div class="flex items-center gap-unit-sm">
+<div class="h-4 w-4 rounded-full bg-surface-container animate-shimmer"></div>
+<div class="h-4 w-1/2 rounded bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+<div class="mt-auto pt-unit-md border-t border-outline-variant flex justify-end gap-unit-sm">
+<div class="h-9 w-32 rounded bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+<!-- Skeleton Card 3 -->
+<div class="bg-surface-container-high border border-outline-variant rounded-lg p-unit-lg flex flex-col gap-unit-md">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-unit-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container animate-shimmer"></div>
+<div class="flex flex-col gap-unit-xs">
+<div class="h-5 w-20 rounded bg-surface-container animate-shimmer"></div>
+<div class="h-4 w-24 rounded bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+<div class="h-6 w-20 rounded-full bg-surface-container animate-shimmer"></div>
+</div>
+<div class="flex flex-col gap-unit-sm mt-unit-sm">
+<div class="h-6 w-2/3 rounded bg-surface-container animate-shimmer"></div>
+<div class="flex items-center gap-unit-sm">
+<div class="h-4 w-4 rounded-full bg-surface-container animate-shimmer"></div>
+<div class="h-4 w-3/4 rounded bg-surface-container animate-shimmer"></div>
+</div>
+<div class="flex items-center gap-unit-sm">
+<div class="h-4 w-4 rounded-full bg-surface-container animate-shimmer"></div>
+<div class="h-4 w-1/4 rounded bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+<div class="mt-auto pt-unit-md border-t border-outline-variant flex justify-end gap-unit-sm">
+<div class="h-9 w-20 rounded bg-surface-container animate-shimmer"></div>
+<div class="h-9 w-28 rounded bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+<!-- Skeleton Card 4 -->
+<div class="bg-surface-container-high border border-outline-variant rounded-lg p-unit-lg flex flex-col gap-unit-md">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-unit-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container animate-shimmer"></div>
+<div class="flex flex-col gap-unit-xs">
+<div class="h-5 w-24 rounded bg-surface-container animate-shimmer"></div>
+<div class="h-4 w-16 rounded bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+<div class="h-6 w-20 rounded-full bg-surface-container animate-shimmer"></div>
+</div>
+<div class="flex flex-col gap-unit-sm mt-unit-sm">
+<div class="h-6 w-3/4 rounded bg-surface-container animate-shimmer"></div>
+<div class="flex items-center gap-unit-sm">
+<div class="h-4 w-4 rounded-full bg-surface-container animate-shimmer"></div>
+<div class="h-4 w-1/2 rounded bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+<div class="mt-auto pt-unit-md border-t border-outline-variant flex justify-end gap-unit-sm">
+<div class="h-9 w-full rounded bg-surface-container animate-shimmer"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant dark:border-outline-variant w-full py-unit-xl px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-unit-md mt-auto">
+<div class="flex flex-col items-center md:items-start gap-unit-sm">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">ExpertSync</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant dark:text-on-surface-variant">© 2024 ExpertSync. High-performance scheduling for professionals.</span>
+</div>
+<div class="flex flex-wrap justify-center gap-unit-md font-body-sm text-body-sm">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface underline transition-all" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface underline transition-all" href="#">Terms of Service</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface underline transition-all" href="#">Support</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface underline transition-all" href="#">API Docs</a>
+</div>
+</footer>
+</body></html>
