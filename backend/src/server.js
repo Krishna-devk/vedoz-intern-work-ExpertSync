@@ -2,10 +2,15 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
+import os from 'os';
+import mongoose from 'mongoose';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import connectDB from './config/db.js';
 import errorHandler from './middleware/errorHandler.js';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger.js';
+
 
 dotenv.config();
 
@@ -47,10 +52,62 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Get basic API information
+ *     tags: [System]
+ *     responses:
+ *       200:
+ *         description: Basic API details and documentation link
+ */
+app.get('/', (req, res) => {
+  res.status(200).json({
+    name: 'ExpertSync API',
+    version: '1.0.0',
+    description: 'Real-time booking engine for experts',
+    documentation: `${req.protocol}://${req.get('host')}/docs`,
+    status: 'Operational'
+  });
+});
+
+/**
+ * @swagger
+ * /api:
+ *   get:
+ *     summary: Get system and database status
+ *     tags: [System]
+ *     responses:
+ *       200:
+ *         description: Detailed system status including database connectivity and uptime
+ */
+app.get('/api', (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected';
+  res.status(200).json({
+    status: 'Active',
+    uptime: `${Math.floor(process.uptime())}s`,
+    database: dbStatus,
+    system: {
+      platform: os.platform(),
+      memory: `${Math.round(os.freemem() / 1024 / 1024)}MB / ${Math.round(os.totalmem() / 1024 / 1024)}MB free`,
+      cpuLoad: os.loadavg()
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'ExpertSync Engine is awake' });
 });
+
+
+// Swagger Documentation
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }', // Hide the search bar for a cleaner look
+  customSiteTitle: "ExpertSync API Docs"
+}));
+
 
 // API Routes
 import expertRoutes from './routes/expertRoutes.js';
