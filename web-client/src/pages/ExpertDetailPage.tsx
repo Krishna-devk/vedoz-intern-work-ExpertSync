@@ -44,15 +44,16 @@ const ExpertDetailPage: React.FC = () => {
     }
   });
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof bookingSchema>>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
-      expertId: id,
+      expertId: id || '',
       startTime: '',
       userName: '',
       userEmail: '',
       userPhone: '',
-      notes: ''
+      notes: '',
+      status: 'CONFIRMED'
     }
   });
 
