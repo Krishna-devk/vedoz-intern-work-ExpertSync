@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { BOOKING_STATUS } from '../constants/bookingStatus.ts';
+import { BOOKING_STATUS } from '../constants/bookingStatus';
 
 export const bookingSchema = z.object({
   expertId: z.string(),

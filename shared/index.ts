@@ -1,3 +1,3 @@
-export * from './constants/bookingStatus.ts';
-export * from './schemas/expertSchema.ts';
-export * from './schemas/bookingSchema.ts';
+export * from './constants/bookingStatus';
+export * from './schemas/expertSchema';
+export * from './schemas/bookingSchema';
