@@ -7,6 +7,8 @@ import ExpertDetailPage from './pages/ExpertDetailPage';
 import MyBookingsPage from './pages/MyBookingsPage';
 import ExpertAdminPage from './pages/ExpertAdminPage';
 
+import { ThemeProvider } from './context/ThemeContext';
+
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
@@ -18,19 +20,22 @@ const App: React.FC = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
-        <div className="min-h-screen bg-[#0B0F19]">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/expert/:id" element={<ExpertDetailPage />} />
-            <Route path="/my-bookings" element={<MyBookingsPage />} />
-            <Route path="/admin" element={<ExpertAdminPage />} />
-          </Routes>
-        </div>
-      </Router>
+      <ThemeProvider>
+        <Router>
+          <div className="min-h-screen transition-colors duration-300">
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/expert/:id" element={<ExpertDetailPage />} />
+              <Route path="/my-bookings" element={<MyBookingsPage />} />
+              <Route path="/admin" element={<ExpertAdminPage />} />
+            </Routes>
+          </div>
+        </Router>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
+
 
 export default App;

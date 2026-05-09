@@ -33,7 +33,7 @@ const Toast: React.FC<ToastProps> = ({ message, type, onClose, duration = 5000 }
 
   return (
     <div className={`
-      fixed top-24 right-4 z-[100] flex items-center gap-3 p-4 rounded-2xl border backdrop-blur-xl
+      fixed top-24 right-4 z-100 flex items-center gap-3 p-4 rounded-2xl border backdrop-blur-xl
       animate-fade-in shadow-2xl transition-all duration-300
       ${bgColors[type]}
     `}>

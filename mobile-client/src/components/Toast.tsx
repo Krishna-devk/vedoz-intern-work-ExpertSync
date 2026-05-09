@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Animated, StyleSheet, Text, View, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -13,6 +13,21 @@ interface ToastProps {
 export default function Toast({ message, type, onClose }: ToastProps) {
   const [fadeAnim] = useState(new Animated.Value(0));
   const [translateY] = useState(new Animated.Value(-100));
+
+  const hide = useCallback(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateY, {
+        toValue: -100,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start(() => onClose());
+  }, [fadeAnim, translateY, onClose]);
 
   useEffect(() => {
     Animated.parallel([
@@ -34,22 +49,8 @@ export default function Toast({ message, type, onClose }: ToastProps) {
     }, 4000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [fadeAnim, translateY, hide]);
 
-  const hide = () => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-      Animated.timing(translateY, {
-        toValue: -100,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-    ]).start(() => onClose());
-  };
 
   const colors = {
     success: '#10B981',

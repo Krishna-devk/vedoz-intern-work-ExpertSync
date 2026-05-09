@@ -14,4 +14,6 @@ const bookingSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
+bookingSchema.index({ expertId: 1, startTime: 1 }, { unique: true });
+
 export const Booking = mongoose.model('Booking', bookingSchema);

@@ -1,26 +1,27 @@
 # ExpertSync: Real-Time Expert Booking Platform
 
-A high-performance, real-time booking ecosystem built with a modern monorepo architecture. ExpertSync connects users with domain experts through a seamless, glassmorphic interface across Web and Mobile.
+A high-performance, real-time booking ecosystem built with a modern monorepo architecture. ExpertSync connects users with domain experts through a seamless, premium interface across Web and Mobile.
 
 ## 🚀 Key Features
 
-- **Real-Time Availability**: Powered by Socket.io, time slots update instantly across all platforms when a booking occurs.
-- **Glassmorphic Design**: A premium, dark-mode UI with mesh gradients and translucent "glass" components.
-- **Multi-Platform Sync**: Unified backend serving both a React Web Client and a React Native (Expo) Mobile App.
-- **Shared Logic**: Zod schemas and TypeScript types shared via a central `@expertsync/shared` package.
-- **Seamless Meeting Integration**: Instant "Join Meeting" capability for confirmed sessions.
+- **Real-Time Availability**: Powered by **Socket.io**, time slots update instantly across all platforms when a booking occurs.
+- **Global Theme Engine**: Complete cross-platform support for **Premium Light and Dark Modes** with persistent user settings.
+- **Race-Condition Protection**: Atomic database operations and unique constraints prevent double-booking of the same slot.
+- **Glassmorphic UI**: A state-of-the-art design system featuring mesh gradients, translucent components, and fluid animations.
+- **Infinite Discovery**: High-performance infinite scroll (Mobile) and intersection observers (Web) for seamless expert browsing.
+- **Shared Type Safety**: Zod schemas and TypeScript types shared via a central `@expertsync/shared` package for 100% full-stack consistency.
 
 ## 🛠️ Technology Stack
 
 - **Backend**: Node.js, Express, MongoDB (Mongoose), Socket.io
 - **Web**: React 19, Vite 6, Tailwind CSS 4, TanStack Query 5
-- **Mobile**: React Native, Expo, NativeWind (Tailwind), Lucide Icons
+- **Mobile**: React Native, Expo, Lucide Icons, AsyncStorage
 - **Shared**: Zod (Schema Validation), TypeScript
 
 ## 🏁 Getting Started
 
 ### 1. Installation
-Run the following command in the root directory:
+Run the following command in the root directory to install all dependencies for the entire monorepo:
 ```bash
 npm install
 ```
@@ -33,26 +34,28 @@ PORT=5000
 ```
 
 ### 3. Database Seeding
-Populate the platform with professional experts and available slots:
+Populate the platform with high-quality expert profiles and available slots:
 ```bash
 npm run seed
 ```
 
 ### 4. Running the Project
-Launch all services simultaneously from the root:
+Launch the development services from the root:
 
-- **Web Client**: `npm run dev:web`
-- **Backend Server**: `npm run dev:backend`
-- **Mobile Client**: `npm run dev:mobile` (Press `s` to switch between Android/iOS emulators or use the Expo Go app)
+- **Full Stack**: `npm run dev` (Starts backend, web, and mobile simultaneously)
+- **Individual Services**:
+  - **Web Client**: `npm run dev:web`
+  - **Backend Server**: `npm run dev:backend`
+  - **Mobile Client**: `npm run dev:mobile`
 
 ## 🏗️ Architecture
 
 ```text
 ├── backend/          # Node.js Express API & Sockets
-├── web-client/       # React 19 + Tailwind 4 SPA
-├── mobile-client/    # Expo React Native App
-└── shared/           # Common schemas and types
+├── web-client/       # React 19 + Tailwind 4 SPA (Premium Light/Dark Mode)
+├── mobile-client/    # Expo React Native App (Theme-Aware Components)
+└── shared/           # Common Zod schemas and TypeScript interfaces
 ```
 
 ---
-Built with ❤️ for the ExpertSync Developer Portfolio.
+Built with ❤️ for the ExpertSync Internship Assessment.

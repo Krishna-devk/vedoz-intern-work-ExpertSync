@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, TextInput, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useMemo } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, TextInput, ActivityIndicator, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -11,6 +11,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { bookingSchema } from '@expertsync/shared';
 import Toast from '../../src/components/Toast';
+import { useTheme } from '../../src/context/ThemeContext';
 
 export default function ExpertDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -19,6 +20,17 @@ export default function ExpertDetailScreen() {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+  const { isDark } = useTheme();
+
+  const colors = useMemo(() => ({
+    background: isDark ? '#0B0F19' : '#F3F4F6',
+    card: isDark ? '#111827' : '#FFFFFF',
+    text: isDark ? '#F9FAFB' : '#111827',
+    textMuted: isDark ? '#9CA3AF' : '#4B5563',
+    border: isDark ? '#1F2937' : '#E5E7EB',
+    accent: '#3B82F6',
+    inputBg: isDark ? '#1F2937' : '#F9FAFB',
+  }), [isDark]);
 
   const { data: expert, isLoading } = useQuery({
     queryKey: ['expert', id],
@@ -78,15 +90,26 @@ export default function ExpertDetailScreen() {
     bookingMutation.mutate({ ...data, startTime: selectedSlot });
   };
 
-  if (isLoading) return <ActivityIndicator size="large" color="#3B82F6" style={{ flex: 1 }} />;
+  const groupedSlots = useMemo(() => {
+    if (!expert?.slots) return {};
+    const groups: Record<string, any[]> = {};
+    expert.slots.forEach((slot: any) => {
+      const date = dayjs(slot.startTime).format('YYYY-MM-DD');
+      if (!groups[date]) groups[date] = [];
+      groups[date].push(slot);
+    });
+    return groups;
+  }, [expert?.slots]);
+
+  if (isLoading) return <ActivityIndicator size="large" color="#3B82F6" style={{ flex: 1, backgroundColor: colors.background }} />;
   if (!expert) return <Text style={{ color: 'red', textAlign: 'center', marginTop: 50 }}>Expert not found.</Text>;
 
   if (isSuccess) {
     return (
-      <View style={[styles.container, styles.center]}>
+      <View style={[styles.container, styles.center, { backgroundColor: colors.background }]}>
         <Ionicons name="checkmark-circle" size={80} color="#10B981" />
-        <Text style={styles.successTitle}>Booking Confirmed!</Text>
-        <Text style={styles.successText}>Your session with {expert.name} is scheduled.</Text>
+        <Text style={[styles.successTitle, { color: colors.text }]}>Booking Confirmed!</Text>
+        <Text style={[styles.successText, { color: colors.textMuted }]}>Your session with {expert.name} is scheduled.</Text>
         <TouchableOpacity 
           style={styles.primaryButton}
           onPress={() => router.replace('/(tabs)/bookings')}
@@ -98,145 +121,172 @@ export default function ExpertDetailScreen() {
   }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.profileHeader}>
-        <Image source={{ uri: expert.avatar }} style={styles.largeAvatar} />
-        <Text style={styles.largeName}>{expert.name}</Text>
-        <Text style={styles.largeCategory}>{expert.category}</Text>
-        
-        <View style={styles.largeStats}>
-          <View style={styles.largeStat}>
-            <Ionicons name="star" size={18} color="#F59E0B" />
-            <Text style={styles.largeStatText}>{expert.rating}</Text>
-          </View>
-          <View style={styles.largeStat}>
-            <Ionicons name="briefcase" size={18} color="#9CA3AF" />
-            <Text style={styles.largeStatText}>{expert.experience} Yrs Exp</Text>
-          </View>
-        </View>
-      </View>
-
-      <Text style={styles.sectionTitle}>Select Time Slot</Text>
-      
-      {(() => {
-        // Group slots by date
-        const groupedSlots: Record<string, any[]> = {};
-        expert.slots.forEach((slot: any) => {
-          const date = dayjs(slot.startTime).format('YYYY-MM-DD');
-          if (!groupedSlots[date]) groupedSlots[date] = [];
-          groupedSlots[date].push(slot);
-        });
-
-        return Object.keys(groupedSlots).sort().map(date => (
-          <View key={date} style={styles.dateGroup}>
-            <Text style={styles.dateHeader}>{dayjs(date).format('dddd, MMM D')}</Text>
-            <View style={styles.slotsGrid}>
-              {groupedSlots[date].map((slot: any, index: number) => {
-                const isSelected = selectedSlot === slot.startTime;
-                const isBooked = slot.isBooked;
-                const isPast = dayjs(slot.startTime).isBefore(dayjs());
-
-                return (
-                  <TouchableOpacity
-                    key={index}
-                    disabled={isBooked || isPast}
-                    onPress={() => {
-                      Haptics.selectionAsync();
-                      setSelectedSlot(slot.startTime);
-                    }}
-                    style={[
-                      styles.slotItem,
-                      (isBooked || isPast) && styles.slotBooked,
-                      isSelected && styles.slotSelected
-                    ]}
-                  >
-                    <Text style={[
-                      styles.slotText,
-                      (isBooked || isPast) && styles.slotTextBooked,
-                      isSelected && styles.slotTextSelected
-                    ]}>
-                      {dayjs(slot.startTime).format('h:mm A')}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <View style={styles.header}>
+            <Image source={{ uri: expert.avatar }} style={styles.avatar} />
+            <View style={styles.headerInfo}>
+              <Text style={[styles.name, { color: colors.text }]}>{expert.name}</Text>
+              <Text style={styles.category}>{expert.category}</Text>
+              <View style={styles.statsRow}>
+                <View style={[styles.largeStat, { backgroundColor: colors.card }]}>
+                  <Ionicons name="star" size={16} color="#FBBF24" />
+                  <Text style={[styles.largeStatText, { color: colors.text }]}>{expert.rating}</Text>
+                </View>
+                <View style={[styles.largeStat, { backgroundColor: colors.card }]}>
+                  <Ionicons name="briefcase" size={16} color="#3B82F6" />
+                  <Text style={[styles.largeStatText, { color: colors.text }]}>{expert.experience} Yrs</Text>
+                </View>
+              </View>
             </View>
           </View>
-        ));
-      })()}
 
-      {selectedSlot && (
-        <View style={styles.formContainer}>
-          <Text style={styles.sectionTitle}>Booking Details</Text>
-          
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Full Name</Text>
-            <Controller
-              control={control}
-              name="userName"
-              render={({ field: { onChange, value } }: { field: any }) => (
-                <TextInput
-                  style={styles.input}
-                  placeholder="John Doe"
-                  placeholderTextColor="#4B5563"
-                  onChangeText={onChange}
-                  value={value}
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>About</Text>
+          <Text style={[styles.bio, { color: colors.textMuted }]}>{expert.bio}</Text>
+
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Select Time Slot</Text>
+          {Object.keys(groupedSlots).sort().map(date => (
+            <View key={date} style={styles.dateGroup}>
+              <Text style={styles.dateHeader}>{dayjs(date).format('dddd, MMM D')}</Text>
+              <View style={styles.slotsGrid}>
+                {groupedSlots[date].map((slot, index) => {
+                  const isSelected = selectedSlot === slot.startTime;
+                  const isBooked = slot.isBooked;
+                  const isPast = dayjs(slot.startTime).isBefore(dayjs());
+                  
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      disabled={isBooked || isPast}
+                      onPress={() => {
+                        Haptics.selectionAsync();
+                        setSelectedSlot(slot.startTime);
+                      }}
+                      style={[
+                        styles.slotItem,
+                        { backgroundColor: colors.inputBg, borderColor: colors.border },
+                        (isBooked || isPast) && styles.slotBooked,
+                        isSelected && styles.slotSelected
+                      ]}
+                    >
+                      <Text style={[
+                        styles.slotText,
+                        { color: colors.text },
+                        (isBooked || isPast) && styles.slotTextBooked,
+                        isSelected && styles.slotTextSelected
+                      ]}>
+                        {dayjs(slot.startTime).format('h:mm A')}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+          ))}
+
+          {selectedSlot && (
+            <View style={[styles.formContainer, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              <Text style={[styles.sectionTitle, { color: colors.text, marginTop: 0 }]}>Booking Details</Text>
+              
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Full Name</Text>
+                <Controller
+                  control={control}
+                  name="userName"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={[styles.input, { backgroundColor: colors.inputBg, color: colors.text, borderColor: colors.border }]}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      placeholder="Your Name"
+                      placeholderTextColor={colors.textMuted}
+                    />
+                  )}
                 />
-              )}
-            />
-            {errors.userName && <Text style={styles.errorText}>{errors.userName.message as string}</Text>}
-          </View>
+                {errors.userName && <Text style={styles.errorText}>{errors.userName.message}</Text>}
+              </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email Address</Text>
-            <Controller
-              control={control}
-              name="userEmail"
-              render={({ field: { onChange, value } }: { field: any }) => (
-                <TextInput
-                  style={styles.input}
-                  placeholder="john@example.com"
-                  placeholderTextColor="#4B5563"
-                  onChangeText={onChange}
-                  value={value}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Email Address</Text>
+                <Controller
+                  control={control}
+                  name="userEmail"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={[styles.input, { backgroundColor: colors.inputBg, color: colors.text, borderColor: colors.border }]}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      placeholder="your@email.com"
+                      placeholderTextColor={colors.textMuted}
+                    />
+                  )}
                 />
-              )}
-            />
-            {errors.userEmail && <Text style={styles.errorText}>{errors.userEmail.message as string}</Text>}
-          </View>
+                {errors.userEmail && <Text style={styles.errorText}>{errors.userEmail.message}</Text>}
+              </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Phone Number</Text>
-            <Controller
-              control={control}
-              name="userPhone"
-              render={({ field: { onChange, value } }: { field: any }) => (
-                <TextInput
-                  style={styles.input}
-                  placeholder="+1 (555) 000-0000"
-                  placeholderTextColor="#4B5563"
-                  onChangeText={onChange}
-                  value={value}
-                  keyboardType="phone-pad"
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Phone Number</Text>
+                <Controller
+                  control={control}
+                  name="userPhone"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={[styles.input, { backgroundColor: colors.inputBg, color: colors.text, borderColor: colors.border }]}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      keyboardType="phone-pad"
+                      placeholder="+1 (555) 000-0000"
+                      placeholderTextColor={colors.textMuted}
+                    />
+                  )}
                 />
-              )}
-            />
-            {errors.userPhone && <Text style={styles.errorText}>{errors.userPhone.message as string}</Text>}
-          </View>
+                {errors.userPhone && <Text style={styles.errorText}>{errors.userPhone.message}</Text>}
+              </View>
 
-          <TouchableOpacity 
-            style={[styles.primaryButton, bookingMutation.isPending && styles.disabledButton]}
-            onPress={handleSubmit(onSubmit)}
-            disabled={bookingMutation.isPending}
-          >
-            <Text style={styles.buttonText}>
-              {bookingMutation.isPending ? 'Booking...' : 'Confirm Booking'}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Notes (Optional)</Text>
+                <Controller
+                  control={control}
+                  name="notes"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={[styles.input, { backgroundColor: colors.inputBg, color: colors.text, borderColor: colors.border, height: 100, textAlignVertical: 'top', paddingTop: 12 }]}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      multiline
+                      numberOfLines={4}
+                      placeholder="Anything you want to share..."
+                      placeholderTextColor={colors.textMuted}
+                    />
+                  )}
+                />
+              </View>
+
+              <TouchableOpacity 
+                style={[styles.primaryButton, bookingMutation.isPending && styles.disabledButton]}
+                onPress={handleSubmit(onSubmit)}
+                disabled={bookingMutation.isPending}
+              >
+                {bookingMutation.isPending ? (
+                  <ActivityIndicator color="#FFF" />
+                ) : (
+                  <Text style={styles.buttonText}>Confirm Booking</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          )}
+        </ScrollView>
+      </TouchableWithoutFeedback>
       {toast && (
         <Toast 
           message={toast.message} 
@@ -244,69 +294,71 @@ export default function ExpertDetailScreen() {
           onClose={() => setToast(null)} 
         />
       )}
-    </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0B0F19',
   },
   center: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
-  content: {
+  scrollContent: {
     padding: 20,
-    paddingTop: 40,
   },
-  profileHeader: {
+  header: {
+    flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 30,
+    marginTop: 10,
   },
-  largeAvatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 4,
-    borderColor: '#1F2937',
-    marginBottom: 16,
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginRight: 20,
   },
-  largeName: {
+  headerInfo: {
+    flex: 1,
+  },
+  name: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#F9FAFB',
     marginBottom: 4,
   },
-  largeCategory: {
+  category: {
     fontSize: 16,
     color: '#3B82F6',
-    fontWeight: '600',
-    marginBottom: 16,
+    fontWeight: '700',
+    marginBottom: 12,
   },
-  largeStats: {
+  statsRow: {
     flexDirection: 'row',
-    gap: 20,
+    gap: 10,
   },
   largeStat: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: '#1F2937',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,
   },
   largeStatText: {
-    color: '#F9FAFB',
     fontWeight: 'bold',
+  },
+  bio: {
+    fontSize: 15,
+    lineHeight: 22,
+    marginBottom: 30,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#F9FAFB',
     marginBottom: 16,
     marginTop: 10,
   },
@@ -325,35 +377,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 10,
-    marginBottom: 30,
   },
   slotItem: {
     width: '31%',
-    backgroundColor: '#1F2937',
     padding: 12,
     borderRadius: 12,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#374151',
   },
   slotSelected: {
     backgroundColor: '#3B82F6',
     borderColor: '#60A5FA',
   },
   slotBooked: {
-    backgroundColor: '#0F172A',
-    borderColor: '#1E293B',
-    opacity: 0.5,
+    backgroundColor: 'rgba(0,0,0,0.05)',
+    borderColor: 'transparent',
+    opacity: 0.3,
   },
   slotText: {
-    color: '#F9FAFB',
     fontWeight: 'bold',
     fontSize: 14,
-  },
-  slotDateText: {
-    color: '#9CA3AF',
-    fontSize: 10,
-    marginTop: 2,
   },
   slotTextSelected: {
     color: '#FFFFFF',
@@ -363,30 +406,25 @@ const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
   },
   formContainer: {
-    backgroundColor: '#111827',
     padding: 20,
     borderRadius: 24,
     borderWidth: 1,
-    borderColor: '#374151',
+    marginTop: 20,
     marginBottom: 40,
   },
   inputGroup: {
     marginBottom: 20,
   },
   label: {
-    color: '#9CA3AF',
     fontSize: 14,
     marginBottom: 8,
   },
   input: {
-    backgroundColor: '#1F2937',
     height: 54,
     borderRadius: 12,
     paddingHorizontal: 16,
-    color: '#F9FAFB',
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#374151',
   },
   primaryButton: {
     backgroundColor: '#3B82F6',
@@ -412,12 +450,10 @@ const styles = StyleSheet.create({
   successTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#F9FAFB',
     marginTop: 20,
     marginBottom: 10,
   },
   successText: {
-    color: '#9CA3AF',
     textAlign: 'center',
     marginBottom: 30,
     fontSize: 16,

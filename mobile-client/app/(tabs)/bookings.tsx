@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Image, ActivityIndicator, KeyboardAvoidingView, Linking } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../src/api/axios';
 import { Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
+import { useTheme } from '../../src/context/ThemeContext';
 
 export default function BookingsScreen() {
   const [email, setEmail] = useState('');
   const [searchEmail, setSearchEmail] = useState('');
+  const { isDark } = useTheme();
+
+  const colors = useMemo(() => ({
+    background: isDark ? '#0F172A' : '#F8FAFC',
+    card: isDark ? '#1E293B' : '#FFFFFF',
+    text: isDark ? '#F8FAFC' : '#0F172A',
+    textMuted: isDark ? '#94A3B8' : '#64748B',
+    border: isDark ? '#334155' : '#E2E8F0',
+    accent: '#3B82F6',
+    inputBg: isDark ? '#1E293B' : '#F1F5F9',
+  }), [isDark]);
 
   const { data: bookings, isLoading } = useQuery({
     queryKey: ['bookings', searchEmail],
@@ -20,21 +32,21 @@ export default function BookingsScreen() {
   });
 
   const renderBooking = ({ item }: { item: any }) => (
-    <View style={styles.card}>
+    <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
       <View style={styles.cardHeader}>
         <Image source={{ uri: item.expertId.avatar }} style={styles.avatar} />
         <View style={styles.expertInfo}>
-          <Text style={styles.name}>{item.expertId.name}</Text>
+          <Text style={[styles.name, { color: colors.text }]}>{item.expertId.name}</Text>
           <Text style={styles.category}>{item.expertId.category}</Text>
         </View>
-        <View style={styles.statusBadge}>
+        <View style={[styles.statusBadge, { backgroundColor: isDark ? 'rgba(16, 185, 129, 0.1)' : '#ECFDF5' }]}>
           <Text style={styles.statusText}>{item.status}</Text>
         </View>
       </View>
-      <View style={styles.cardFooter}>
+      <View style={[styles.cardFooter, { borderTopColor: colors.border }]}>
         <View style={styles.timeInfo}>
-          <Ionicons name="calendar-outline" size={16} color="#9CA3AF" />
-          <Text style={styles.timeText}>
+          <Ionicons name="calendar-outline" size={16} color={colors.textMuted} />
+          <Text style={[styles.timeText, { color: colors.textMuted }]}>
             {dayjs(item.startTime).format('MMM D, YYYY • h:mm A')}
           </Text>
         </View>
@@ -53,14 +65,14 @@ export default function BookingsScreen() {
   );
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.header}>
-        <Text style={styles.title}>My Bookings</Text>
+        <Text style={[styles.title, { color: colors.text }]}>My Bookings</Text>
         <View style={styles.searchContainer}>
           <TextInput
-            style={styles.searchInput}
+            style={[styles.searchInput, { backgroundColor: colors.inputBg, color: colors.text, borderColor: colors.border }]}
             placeholder="Enter email to fetch bookings..."
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor={colors.textMuted}
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
@@ -85,14 +97,14 @@ export default function BookingsScreen() {
           contentContainerStyle={styles.list}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <View style={styles.emptyIconContainer}>
+              <View style={[styles.emptyIconContainer, { backgroundColor: colors.inputBg, borderColor: colors.border }]}>
                 <Ionicons 
                   name={searchEmail ? "calendar-outline" : "search-outline"} 
                   size={48} 
-                  color="#374151" 
+                  color={colors.textMuted} 
                 />
               </View>
-              <Text style={styles.emptyText}>
+              <Text style={[styles.emptyText, { color: colors.textMuted }]}>
                 {searchEmail 
                   ? "No bookings found for this email address." 
                   : "Enter your email above to see your scheduled sessions."}
@@ -108,7 +120,6 @@ export default function BookingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0B0F19',
     paddingTop: 60,
   },
   header: {
@@ -117,9 +128,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#F9FAFB',
+    fontWeight: '900',
     marginBottom: 20,
+    letterSpacing: -1,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -127,34 +138,40 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    height: 54,
-    backgroundColor: '#111827',
-    borderRadius: 14,
+    height: 56,
+    borderRadius: 18,
     paddingHorizontal: 16,
-    color: '#F9FAFB',
     borderWidth: 1,
-    borderColor: '#374151',
     fontSize: 16,
+    fontWeight: '600',
   },
   searchButton: {
-    width: 54,
-    height: 54,
+    width: 56,
+    height: 56,
     backgroundColor: '#3B82F6',
-    borderRadius: 14,
+    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#3B82F6',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
   },
   list: {
     paddingHorizontal: 20,
-    paddingBottom: 100, // Extra space for tab bar
+    paddingBottom: 100,
   },
   card: {
-    backgroundColor: '#1F2937',
-    borderRadius: 20,
-    padding: 16,
+    borderRadius: 24,
+    padding: 20,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#374151',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -162,40 +179,41 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 12,
+    width: 54,
+    height: 54,
+    borderRadius: 18,
+    marginRight: 14,
   },
   expertInfo: {
     flex: 1,
   },
   name: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#F9FAFB',
+    fontSize: 18,
+    fontWeight: '800',
     marginBottom: 2,
+    letterSpacing: -0.5,
   },
   category: {
     fontSize: 13,
     color: '#3B82F6',
-    fontWeight: '500',
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   statusBadge: {
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 10,
   },
   statusText: {
     color: '#10B981',
     fontSize: 11,
-    fontWeight: 'bold',
+    fontWeight: '900',
+    textTransform: 'uppercase',
   },
   cardFooter: {
     borderTopWidth: 1,
-    borderTopColor: '#374151',
-    paddingTop: 12,
+    paddingTop: 16,
   },
   timeInfo: {
     flexDirection: 'row',
@@ -203,8 +221,8 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   timeText: {
-    color: '#9CA3AF',
     fontSize: 14,
+    fontWeight: '600',
     flex: 1,
   },
   joinButton: {
@@ -212,16 +230,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 10,
+    paddingVertical: 14,
     paddingHorizontal: 16,
-    borderRadius: 12,
-    marginTop: 12,
+    borderRadius: 14,
+    marginTop: 16,
     gap: 8,
+    shadowColor: '#3B82F6',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
   },
   joinButtonText: {
     color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 14,
+    fontWeight: '800',
+    fontSize: 15,
   },
   emptyContainer: {
     paddingTop: 80,
@@ -232,19 +255,16 @@ const styles = StyleSheet.create({
   emptyIconContainer: {
     width: 100,
     height: 100,
-    backgroundColor: '#111827',
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#1F2937',
   },
   emptyText: {
     textAlign: 'center',
-    color: '#9CA3AF',
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: '500',
+    fontWeight: '700',
   },
 });

@@ -22,6 +22,7 @@ config.resolver.unstable_enablePackageExports = true;
 // 4. Force resolution of problematic packages
 config.resolver.extraNodeModules = {
   '@react-native/virtualized-lists': path.resolve(workspaceRoot, 'node_modules/@react-native/virtualized-lists'),
+  '@react-native-async-storage/async-storage': path.resolve(workspaceRoot, 'node_modules/@react-native-async-storage/async-storage'),
 };
 
 module.exports = config;
