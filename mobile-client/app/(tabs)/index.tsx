@@ -43,7 +43,11 @@ export default function HomeScreen() {
     setPage(1);
   }, [search, category]);
 
-  const categories = ['All', 'AI Coach', 'Frontend Guru', 'Backend Architect', 'DevOps Specialist', 'Product Manager'];
+  const categories = [
+    'All', 'AI Coach', 'Frontend Guru', 'Backend Architect', 'DevOps Specialist', 
+    'Product Manager', 'Data Scientist', 'UX Designer', 'Security Expert',
+    'Cloud Architect', 'Mobile Developer', 'HR Consultant', 'Marketing Strategist'
+  ];
 
   const renderExpert = ({ item }: { item: any }) => (
     <Link href={`/expert/${item._id}`} asChild>
