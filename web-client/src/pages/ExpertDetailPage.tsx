@@ -200,32 +200,52 @@ const ExpertDetailPage: React.FC = () => {
               Select a Time Slot
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {expert.slots.map((slot, index) => {
-                const isSelected = selectedSlot === slot.startTime;
-                const isBooked = slot.isBooked;
-                const isPast = dayjs(slot.startTime).isBefore(dayjs());
-                
-                return (
-                  <button
-                    key={index}
-                    disabled={isBooked || isPast}
-                    onClick={() => setSelectedSlot(slot.startTime)}
-                    className={`
-                      p-4 rounded-2xl border text-sm font-semibold transition-all
-                      ${(isBooked || isPast)
-                        ? 'bg-gray-950 border-gray-800 text-gray-600 cursor-not-allowed line-through opacity-50' 
-                        : isSelected
-                          ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-500/20'
-                          : 'bg-gray-800 border-gray-700 text-gray-300 hover:border-blue-500/50 hover:bg-gray-700'
-                      }
-                    `}
-                  >
-                    {dayjs(slot.startTime).format('MMM D, h:mm A')}
-                    {isPast && !isBooked && <span className="block text-[10px] opacity-50 uppercase mt-1">Expired</span>}
-                  </button>
-                );
-              })}
+            <div className="space-y-8">
+              {(() => {
+                // Group slots by date
+                const groupedSlots: Record<string, any[]> = {};
+                expert.slots.forEach((slot) => {
+                  const date = dayjs(slot.startTime).format('YYYY-MM-DD');
+                  if (!groupedSlots[date]) groupedSlots[date] = [];
+                  groupedSlots[date].push(slot);
+                });
+
+                return Object.keys(groupedSlots).sort().map(date => (
+                  <div key={date}>
+                    <h3 className="text-gray-500 font-semibold uppercase text-xs tracking-wider mb-4 border-b border-gray-800 pb-2">
+                      {dayjs(date).format('dddd, MMMM D')}
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {groupedSlots[date].map((slot, index) => {
+                        const isSelected = selectedSlot === slot.startTime;
+                        const isBooked = slot.isBooked;
+                        const isPast = dayjs(slot.startTime).isBefore(dayjs());
+                        
+                        return (
+                          <button
+                            key={index}
+                            type="button"
+                            disabled={isBooked || isPast}
+                            onClick={() => setSelectedSlot(slot.startTime)}
+                            className={`
+                              p-4 rounded-2xl border text-sm font-semibold transition-all
+                              ${(isBooked || isPast)
+                                ? 'bg-gray-950 border-gray-800 text-gray-600 cursor-not-allowed line-through opacity-50' 
+                                : isSelected
+                                  ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-500/20'
+                                  : 'bg-gray-800 border-gray-700 text-gray-300 hover:border-blue-500/50 hover:bg-gray-700'
+                              }
+                            `}
+                          >
+                            {dayjs(slot.startTime).format('h:mm A')}
+                            {isPast && !isBooked && <span className="block text-[10px] opacity-50 uppercase mt-1">Expired</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ));
+              })()}
             </div>
           </div>
 

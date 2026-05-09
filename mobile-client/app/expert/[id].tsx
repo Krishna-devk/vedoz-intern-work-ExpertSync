@@ -117,44 +117,53 @@ export default function ExpertDetailScreen() {
       </View>
 
       <Text style={styles.sectionTitle}>Select Time Slot</Text>
-      <View style={styles.slotsGrid}>
-        {expert.slots.map((slot: any, index: number) => {
-          const isSelected = selectedSlot === slot.startTime;
-          const isBooked = slot.isBooked;
-          const isPast = dayjs(slot.startTime).isBefore(dayjs());
+      
+      {(() => {
+        // Group slots by date
+        const groupedSlots: Record<string, any[]> = {};
+        expert.slots.forEach((slot: any) => {
+          const date = dayjs(slot.startTime).format('YYYY-MM-DD');
+          if (!groupedSlots[date]) groupedSlots[date] = [];
+          groupedSlots[date].push(slot);
+        });
 
-          return (
-            <TouchableOpacity
-              key={index}
-              disabled={isBooked || isPast}
-              onPress={() => {
-                Haptics.selectionAsync();
-                setSelectedSlot(slot.startTime);
-              }}
-              style={[
-                styles.slotItem,
-                (isBooked || isPast) && styles.slotBooked,
-                isSelected && styles.slotSelected
-              ]}
-            >
-              <Text style={[
-                styles.slotText,
-                (isBooked || isPast) && styles.slotTextBooked,
-                isSelected && styles.slotTextSelected
-              ]}>
-                {dayjs(slot.startTime).format('h:mm A')}
-              </Text>
-              <Text style={[
-                styles.slotDateText,
-                (isBooked || isPast) && styles.slotTextBooked,
-                isSelected && styles.slotTextSelected
-              ]}>
-                {isPast && !isBooked ? 'EXPIRED' : dayjs(slot.startTime).format('MMM D')}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+        return Object.keys(groupedSlots).sort().map(date => (
+          <View key={date} style={styles.dateGroup}>
+            <Text style={styles.dateHeader}>{dayjs(date).format('dddd, MMM D')}</Text>
+            <View style={styles.slotsGrid}>
+              {groupedSlots[date].map((slot: any, index: number) => {
+                const isSelected = selectedSlot === slot.startTime;
+                const isBooked = slot.isBooked;
+                const isPast = dayjs(slot.startTime).isBefore(dayjs());
+
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    disabled={isBooked || isPast}
+                    onPress={() => {
+                      Haptics.selectionAsync();
+                      setSelectedSlot(slot.startTime);
+                    }}
+                    style={[
+                      styles.slotItem,
+                      (isBooked || isPast) && styles.slotBooked,
+                      isSelected && styles.slotSelected
+                    ]}
+                  >
+                    <Text style={[
+                      styles.slotText,
+                      (isBooked || isPast) && styles.slotTextBooked,
+                      isSelected && styles.slotTextSelected
+                    ]}>
+                      {dayjs(slot.startTime).format('h:mm A')}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+        ));
+      })()}
 
       {selectedSlot && (
         <View style={styles.formContainer}>
@@ -300,6 +309,17 @@ const styles = StyleSheet.create({
     color: '#F9FAFB',
     marginBottom: 16,
     marginTop: 10,
+  },
+  dateGroup: {
+    marginBottom: 20,
+  },
+  dateHeader: {
+    fontSize: 14,
+    color: '#9CA3AF',
+    fontWeight: '600',
+    marginBottom: 10,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   slotsGrid: {
     flexDirection: 'row',

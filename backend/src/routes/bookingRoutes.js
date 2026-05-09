@@ -1,5 +1,6 @@
 import express from 'express';
-import { createBooking, getMyBookings } from '../controllers/bookingController.js';
+import { createBooking, getMyBookings, updateBookingStatus } from '../controllers/bookingController.js';
+
 
 const router = express.Router();
 
@@ -91,5 +92,34 @@ router.post('/', createBooking);
  *                 $ref: '#/components/schemas/Booking'
  */
 router.get('/my', getMyBookings);
+
+/**
+ * @swagger
+ * /api/bookings/{id}/status:
+ *   patch:
+ *     summary: Update booking status
+ *     tags: [Bookings]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 enum: [PENDING, CONFIRMED, CANCELLED, COMPLETED]
+ *     responses:
+ *       200:
+ *         description: Status updated successfully
+ */
+router.patch('/:id/status', updateBookingStatus);
+
 
 export default router;

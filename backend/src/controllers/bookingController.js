@@ -65,6 +65,31 @@ export const createBooking = async (req, res, next) => {
   }
 };
 
+export const updateBookingStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const booking = await Booking.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true, runValidators: true }
+    );
+
+    if (!booking) {
+      res.status(404);
+      throw new Error('Booking not found');
+    }
+
+    res.status(200).json({
+      success: true,
+      data: booking
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getMyBookings = async (req, res, next) => {
   try {
     const { email } = req.query;

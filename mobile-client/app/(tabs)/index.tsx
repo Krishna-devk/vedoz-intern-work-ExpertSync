@@ -13,19 +13,35 @@ export default function HomeScreen() {
   const [category, setCategory] = useState('All');
   const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
   
-  const { data: experts, isLoading } = useQuery({
-    queryKey: ['experts', search, category],
+  const [page, setPage] = useState(1);
+  const [allExperts, setAllExperts] = useState<any[]>([]);
+
+  const { isLoading, isFetching } = useQuery({
+    queryKey: ['experts', search, category, page],
     queryFn: async () => {
       const response = await api.get('/experts', { 
         params: { 
           search, 
-          category: category === 'All' ? undefined : category 
+          category: category === 'All' ? undefined : category,
+          page,
+          limit: 10
         } 
       });
-      return response.data.data;
+      const newExperts = response.data.data;
+      if (page === 1) {
+        setAllExperts(newExperts);
+      } else {
+        setAllExperts(prev => [...prev, ...newExperts]);
+      }
+      return response.data;
     },
     refetchInterval: 30000,
   });
+
+  // Reset when filters change
+  React.useEffect(() => {
+    setPage(1);
+  }, [search, category]);
 
   const categories = ['All', 'AI Coach', 'Frontend Guru', 'Backend Architect', 'DevOps Specialist', 'Product Manager'];
 
@@ -106,7 +122,7 @@ export default function HomeScreen() {
         </ScrollView>
       </View>
 
-      {isLoading ? (
+      {isLoading && page === 1 ? (
         <View style={{ paddingHorizontal: 20 }}>
           {[...Array(6)].map((_, i) => (
             <SkeletonExpertCard key={i} />
@@ -114,10 +130,17 @@ export default function HomeScreen() {
         </View>
       ) : (
         <FlatList
-          data={experts}
+          data={allExperts}
           renderItem={renderExpert}
           keyExtractor={(item) => item._id}
           contentContainerStyle={styles.list}
+          onEndReached={() => {
+            if (!isFetching) setPage(prev => prev + 1);
+          }}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={() => (
+            isFetching ? <ActivityIndicator color="#3B82F6" style={{ marginVertical: 20 }} /> : null
+          )}
           ListEmptyComponent={
             <Text style={styles.emptyText}>No experts found.</Text>
           }

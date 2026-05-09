@@ -10,16 +10,29 @@ const HomePage: React.FC = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
 
-  const { data: experts, isLoading } = useQuery({
-    queryKey: ['experts', search, category],
+  const [page, setPage] = useState(1);
+  const [allExperts, setAllExperts] = useState<Expert[]>([]);
+
+  const { isLoading, isFetching } = useQuery({
+    queryKey: ['experts', search, category, page],
     queryFn: async () => {
       const response = await api.get('/experts', {
-        params: { search, category }
+        params: { search, category, page, limit: 8 }
       });
-      return response.data.data as Expert[];
+      const newExperts = response.data.data;
+      if (page === 1) {
+        setAllExperts(newExperts);
+      } else {
+        setAllExperts(prev => [...prev, ...newExperts]);
+      }
+      return response.data;
     },
-    placeholderData: (prev) => prev,
   });
+
+  // Reset page when filters change
+  React.useEffect(() => {
+    setPage(1);
+  }, [search, category]);
 
   const categories = ['All', 'AI Coach', 'Frontend Guru', 'Backend Architect', 'DevOps Specialist', 'Product Manager'];
 
@@ -66,18 +79,30 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* Expert Grid */}
-      {isLoading ? (
+      {isLoading && page === 1 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(8)].map((_, i) => (
             <SkeletonCard key={i} />
           ))}
         </div>
-      ) : experts && experts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {experts.map((expert) => (
-            <ExpertCard key={expert._id} expert={expert} />
-          ))}
-        </div>
+      ) : allExperts && allExperts.length > 0 ? (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {allExperts.map((expert) => (
+              <ExpertCard key={expert._id} expert={expert} />
+            ))}
+          </div>
+          
+          <div className="mt-12 text-center">
+            <button
+              onClick={() => setPage(prev => prev + 1)}
+              className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-12 rounded-2xl border border-gray-800 transition-all disabled:opacity-50"
+              disabled={isFetching}
+            >
+              {isFetching ? 'Loading...' : 'Load More Experts'}
+            </button>
+          </div>
+        </>
       ) : (
         <div className="text-center py-20 bg-gray-900/30 rounded-3xl border border-dashed border-gray-800">
           <p className="text-gray-400 text-lg">No experts found matching your criteria.</p>
