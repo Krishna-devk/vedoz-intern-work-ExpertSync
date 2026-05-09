@@ -48,14 +48,30 @@ Launch the development services from the root:
   - **Backend Server**: `npm run dev:backend`
   - **Mobile Client**: `npm run dev:mobile`
 
+## 🌐 Live Deployments
+
+- **Backend API**: [https://vedoz-intern-work-expertsync-backend.onrender.com](https://vedoz-intern-work-expertsync-backend.onrender.com)
+- **API Documentation**: [https://vedoz-intern-work-expertsync-backend.onrender.com/api-docs](https://vedoz-intern-work-expertsync-backend.onrender.com/api-docs)
+
+## 📱 Mobile App (Android APK)
+
+The Android APK is available for direct download. It is pre-configured to connect to the live Render backend.
+
+**To download and install:**
+1. Navigate to the [Latest Releases](https://github.com/Krishna-devk/vedoz-intern-work-ExpertSync/releases) page.
+2. Download the `ExpertSync.apk` file from the assets section.
+3. On your Android device, open the file and follow the prompts to install (you may need to "Allow installation from unknown sources").
+
 ## 🏗️ Architecture
 
 ```text
 ├── backend/          # Node.js Express API & Sockets
-├── web-client/       # React 19 + Tailwind 4 SPA (Premium Light/Dark Mode)
-├── mobile-client/    # Expo React Native App (Theme-Aware Components)
-└── shared/           # Common Zod schemas and TypeScript interfaces
+├── web-client/       # React 19 + Tailwind 4 SPA
+├── mobile-client/    # Expo React Native App
+├── shared/           # Common Zod schemas and TypeScript interfaces
+└── docs/             # API Documentation & Assets
 ```
 
 ---
 Built with ❤️ for the ExpertSync Internship Assessment.
+
