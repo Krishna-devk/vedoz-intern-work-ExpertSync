@@ -32,11 +32,16 @@ export default function ExpertDetailScreen() {
     inputBg: isDark ? '#1F2937' : '#F9FAFB',
   }), [isDark]);
 
-  const { data: expert, isLoading } = useQuery({
+  const { data: expert, isLoading, isError, refetch } = useQuery({
     queryKey: ['expert', id],
     queryFn: async () => {
-      const response = await api.get(`/experts/${id}`);
-      return response.data.data;
+      try {
+        const response = await api.get(`/experts/${id}`);
+        return response.data.data;
+      } catch (error) {
+        console.error('Fetch expert detail error:', error);
+        throw error;
+      }
     }
   });
 
@@ -102,7 +107,35 @@ export default function ExpertDetailScreen() {
   }, [expert?.slots]);
 
   if (isLoading) return <ActivityIndicator size="large" color="#3B82F6" style={{ flex: 1, backgroundColor: colors.background }} />;
-  if (!expert) return <Text style={{ color: 'red', textAlign: 'center', marginTop: 50 }}>Expert not found.</Text>;
+  
+  if (isError) {
+    return (
+      <View style={[styles.container, styles.center, { backgroundColor: colors.background }]}>
+        <Ionicons name="cloud-offline-outline" size={80} color="#EF4444" />
+        <Text style={[styles.successTitle, { color: colors.text }]}>Connection Failed</Text>
+        <Text style={[styles.successText, { color: colors.textMuted }]}>We couldn&apos;t reach the expert details. Please try again.</Text>
+        <TouchableOpacity 
+          style={styles.primaryButton}
+          onPress={() => refetch()}
+        >
+          <Text style={styles.buttonText}>Retry Now</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  if (!expert) return (
+    <View style={[styles.container, styles.center, { backgroundColor: colors.background }]}>
+      <Ionicons name="alert-circle-outline" size={80} color="#64748B" />
+      <Text style={[styles.successTitle, { color: colors.text }]}>Expert Not Found</Text>
+      <TouchableOpacity 
+        style={styles.primaryButton}
+        onPress={() => router.back()}
+      >
+        <Text style={styles.buttonText}>Go Back</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   if (isSuccess) {
     return (

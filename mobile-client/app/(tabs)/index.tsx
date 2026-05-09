@@ -34,24 +34,31 @@ export default function HomeScreen() {
   const { 
     data, 
     isLoading, 
+    isError,
+    refetch,
     fetchNextPage, 
     hasNextPage, 
     isFetchingNextPage 
   } = useInfiniteQuery({
     queryKey: ['experts', search, category],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await api.get('/experts', { 
-        params: { 
-          search, 
-          category: category === 'All' ? undefined : category,
-          page: pageParam,
-          limit: 10
-        } 
-      });
-      return response.data;
+      try {
+        const response = await api.get('/experts', { 
+          params: { 
+            search, 
+            category: category === 'All' ? undefined : category,
+            page: pageParam,
+            limit: 10
+          } 
+        });
+        return response.data;
+      } catch (error) {
+        console.error('Fetch experts error:', error);
+        throw error;
+      }
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.pagination.page < lastPage.pagination.pages) {
+      if (lastPage?.pagination?.page < lastPage?.pagination?.pages) {
         return lastPage.pagination.page + 1;
       }
       return undefined;
@@ -60,7 +67,7 @@ export default function HomeScreen() {
   });
 
   const allExperts = useMemo(() => 
-    data?.pages.flatMap(page => page.data) || [], 
+    data?.pages.flatMap(page => page.data || []) || [], 
   [data]);
 
 
@@ -91,7 +98,7 @@ export default function HomeScreen() {
           
           <View style={styles.tileContent}>
             <View style={styles.tileHeader}>
-              <View className="flex-1">
+              <View style={{ flex: 1 }}>
                 <Text style={[styles.tileName, { color: colors.text }]} numberOfLines={1}>
                   {item.name}
                 </Text>
@@ -187,6 +194,17 @@ export default function HomeScreen() {
           <View style={{ paddingHorizontal: 20 }}>
             <SkeletonExpertCard />
             <SkeletonExpertCard />
+          </View>
+        ) : isError ? (
+          <View style={styles.errorContainer}>
+            <Ionicons name="cloud-offline-outline" size={60} color="#EF4444" />
+            <Text style={[styles.errorTitle, { color: colors.text }]}>Connection Error</Text>
+            <Text style={[styles.errorSubtitle, { color: colors.textMuted }]}>
+              Could not connect to the server. Please check your connection.
+            </Text>
+            <TouchableOpacity style={styles.retryButton} onPress={() => refetch()}>
+              <Text style={styles.retryText}>Retry Connection</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <FlatList
@@ -419,5 +437,40 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     paddingHorizontal: 40,
+  },
+  errorContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 40,
+    gap: 16,
+  },
+  errorTitle: {
+    fontSize: 22,
+    fontWeight: '900',
+    letterSpacing: -0.5,
+  },
+  errorSubtitle: {
+    textAlign: 'center',
+    fontSize: 15,
+    lineHeight: 22,
+    marginBottom: 10,
+    fontWeight: '600',
+  },
+  retryButton: {
+    backgroundColor: '#3B82F6',
+    paddingHorizontal: 30,
+    paddingVertical: 16,
+    borderRadius: 20,
+    shadowColor: '#3B82F6',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  retryText: {
+    color: '#FFFFFF',
+    fontWeight: '800',
+    fontSize: 16,
   },
 });
