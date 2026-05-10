@@ -20,8 +20,8 @@ const HomePage: React.FC = () => {
       const response = await api.get('/experts', {
         params: { search, category, page, limit: 8 }
       });
-      const newExperts = response.data.data;
-      const totalPages = response.data.pagination.pages;
+      const newExperts = response.data.data || [];
+      const totalPages = response.data.pagination?.pages || 1;
       
       setHasMore(page < totalPages);
       
