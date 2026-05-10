@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm install lightningcss-linux-x64-gnu --no-save && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
